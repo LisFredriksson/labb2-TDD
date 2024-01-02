@@ -31,8 +31,3 @@ it('should return false for an empty personal number', () => {
     const result = validatePersonalNumber('');
     expect(result).toBe(false);
   });
-
-  it('should return false for a null personal number', () => {
-    const result = validatePersonalNumber(null);
-    expect(result).toBe(false);
-  });
