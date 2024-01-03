@@ -1,10 +1,11 @@
 import { validateText } from '../validations/validateText';
 
 describe('validateText.ts tests', () => {
-  it('should return true if valid text input', () => {
-    const result = validateText('Hello, this is valid text!');
-    expect(result).toBe(true);
-  });
+    it('should return true if valid text input', () => {
+        const inputText = "Hello, this is valid text!";
+        const result = validateText(inputText);
+        expect(result).toBe(true);
+      });
 
   it('should return false if empty text input', () => {
     const result = validateText('');
