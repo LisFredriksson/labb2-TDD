@@ -8,7 +8,6 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 const connectionString: string =  process.env.MONGODB_URI as string;
 
 async function connectToDatabase() {
-  console.log(connectionString)
   const  client = new MongoClient(connectionString);
 
   try {

@@ -5,7 +5,7 @@ import connectToDatabase from './db';
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-const app = express();
+export const app = express();
 
 const startServer = async () => {
   try {
