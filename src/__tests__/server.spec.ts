@@ -9,7 +9,4 @@ test('should return a JSON response with status code 200', () => {
     .then((response) => {
       expect(response.headers['content-type']).toMatch(/json/);
     })
-    .catch((error) => {
-      throw error;
-    });
 });
