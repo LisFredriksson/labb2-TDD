@@ -1,12 +1,14 @@
 import request from 'supertest';
 import { app } from '../app';
 
-test('should return a JSON response with status code 200', () => {
-  return request(app)
-    .get('/contact')
-    .expect('Content-Type', /json/)
-    .expect(200)
-    .then((response) => {
-      expect(response.headers['content-type']).toMatch(/json/);
+describe('app.ts', () => {
+    it("should return json", () => {
+        request(app)
+        .get('/contact')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+            if (err) throw err;
+        })
     })
 });
