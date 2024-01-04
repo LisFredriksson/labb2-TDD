@@ -8,6 +8,7 @@ import { request } from 'express';
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 export const app = express();
+app.use(express.json());
 
 app.get('/contact', (req, res) => {
   res.setHeader('Content-Type', 'application/json');

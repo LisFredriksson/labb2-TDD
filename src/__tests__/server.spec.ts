@@ -13,21 +13,45 @@ describe('GET /contact', () => {
 });
 
 describe('POST /contact', () => {
-  it('should return json and correct data structure', async () => {
-    const response = await request(app)
-      .post('/contact')
-      .expect('Content-Type', /json/)
-      .expect(200)
-      .expect({
-        "firstname": "Anna",
-        "lastname": "Andersson",
-        "email": "anna.andersson@gmail.com",
-        "personalnumber": "550713-1405",
-        "address": "Utvecklargatan 12",
-        "zipCode": "111 22",
-        "city": "Stockholm",
-        "country": "Sweden"
-      });
+    it('should return json and correct data structure for valid data', async () => {
+      const response = await request(app)
+        .post('/contact')
+        .send({
+          "firstname": "Anna",
+          "lastname": "Andersson",
+          "email": "anna.andersson@gmail.com",
+          "personalnumber": "550713-1405",
+          "address": "Utvecklargatan 12",
+          "zipCode": "111 22",
+          "city": "Stockholm",
+          "country": "Sweden"
+        })
+        .expect('Content-Type', /json/)
+        .expect(201);
 
+      expect(response.body).toEqual({ message: 'Added new contact' });
+    });
+
+    it('should return json with error messages for invalid data', async () => {
+      const response = await request(app)
+        .post('/contact')
+        .send({
+          // Intentionally providing invalid data
+          "firstname": "Anna",
+          "email": "invalid-email", // Invalid email
+        })
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+      // Your assertions on the response go here
+      expect(response.body).toEqual([
+        { error: 'lastname is missing' },
+        { error: 'personalnumber is missing' },
+        { error: 'address is missing' },
+        { error: 'zipCode is missing' },
+        { error: 'city is missing' },
+        { error: 'country is missing' },
+        { error: 'email is not valid' },
+      ]);
+    });
   });
-});
