@@ -45,15 +45,16 @@ describe('POST /contact - Invalid Data', () => {
       .send(invalidData)
       .expect('Content-Type', /json/)
       .expect(400);
+      console.log(response.text);
     expect(response.body).toEqual({
       errors: [
         'lastname is missing or invalid',
+        'email is missing or invalid',
         'personalnumber is missing or invalid',
         'address is missing or invalid',
         'zipCode is missing or invalid',
         'city is missing or invalid',
         'country is missing or invalid',
-        'email is missing or invalid',
       ],
     });
   });

@@ -31,6 +31,12 @@ app.post('/contact', (req: Request, res: Response) => {
 
     // TODO: Save the contactData to the database here
   }
+
+});
+
+app.use((err: any, req: Request, res: Response, next: any) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Internal Server Error' });
 });
 
 const startServer = async () => {
