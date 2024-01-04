@@ -12,26 +12,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.app = void 0;
 // app.ts
 const express_1 = __importDefault(require("express"));
+const db_1 = __importDefault(require("./db"));
+const contactRoutes_1 = __importDefault(require("./routes/contactRoutes"));
+const errorHandler_1 = require("./middleware/errorHandler");
 const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
-const db_1 = __importDefault(require("./db"));
 dotenv_1.default.config({ path: path_1.default.resolve(__dirname, '../.env') });
-const app = (0, express_1.default)();
+exports.app = (0, express_1.default)();
+exports.app.use(express_1.default.json());
+exports.app.use('/contact', contactRoutes_1.default);
+exports.app.use(errorHandler_1.errorHandler);
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const db = yield (0, db_1.default)();
-        // Use the 'db' instance in your application
-        // For example, you can pass it to routes or controllers
-        const PORT = process.env.PORT; // Explicitly assert the type
-        app.listen(PORT, () => {
+        yield (0, db_1.default)();
+        const PORT = process.env.PORT;
+        exports.app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
         });
     }
     catch (error) {
         console.error('Failed to start the server:', error.message);
-        process.exit(1); // Terminate the application on connection failure
+        process.exit(1);
     }
 });
 startServer();

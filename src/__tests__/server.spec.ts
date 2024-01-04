@@ -30,7 +30,19 @@ describe('POST /contact - Valid Data', () => {
       .expect('Content-Type', /json/)
       .expect(201);
 
-    expect(response.body).toEqual({ message: 'Added new contact' });
+      expect(response.body).toEqual({
+        message: 'Added new contact',
+        contact: expect.objectContaining({
+          firstname: 'Anna',
+          lastname: 'Andersson',
+          email: 'anna.andersson@gmail.com',
+          personalnumber: '900201-0529',
+          address: 'Utvecklargatan 12',
+          zipCode: '111 22',
+          city: 'Stockholm',
+          country: 'Sweden',
+        }),
+      });
   });
 });
 

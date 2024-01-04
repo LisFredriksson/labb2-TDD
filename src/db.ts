@@ -1,23 +1,19 @@
-import { MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import path from 'path';
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-
-const connectionString: string =  process.env.MONGODB_URI as string;
+const connectionString: string = process.env.MONGODB_URI as string;
 
 async function connectToDatabase() {
-  const  client = new MongoClient(connectionString);
   try {
-    await client.connect();
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    await client.close();
+    await mongoose.connect(connectionString);
+    console.log('Connected to MongoDB!');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error);
+    throw error;
   }
 }
-
-connectToDatabase().catch(console.error);
 
 export default connectToDatabase;

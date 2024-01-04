@@ -12,27 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongodb_1 = require("mongodb");
+const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
 dotenv_1.default.config({ path: path_1.default.resolve(__dirname, '../.env') });
 const connectionString = process.env.MONGODB_URI;
 function connectToDatabase() {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(connectionString);
-        const client = new mongodb_1.MongoClient(connectionString);
         try {
-            // Connect to the MongoDB server
-            yield client.connect();
-            // Send a ping to confirm a successful connection
-            yield client.db("admin").command({ ping: 1 });
-            console.log("Pinged your deployment. You successfully connected to MongoDB!");
+            yield mongoose_1.default.connect(connectionString);
+            console.log('Connected to MongoDB!');
         }
-        finally {
-            // Ensure that the client will close when you finish/error
-            yield client.close();
+        catch (error) {
+            console.error('Error connecting to MongoDB:', error);
+            throw error;
         }
     });
 }
-connectToDatabase().catch(console.error);
 exports.default = connectToDatabase;
