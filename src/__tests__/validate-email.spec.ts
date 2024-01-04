@@ -9,7 +9,7 @@ describe('validate-email.ts tests', () => {
     const actualResult = validateEmail('jonatan@gmail');
     expect(actualResult).toBe(false);
   });
-  it('should validate "lis@com" as an invalid email', () => {
+  it('should validate "jonatan.com" as an invalid email', () => {
     const actualResult = validateEmail('jonatan.com');
     expect(actualResult).toBe(false);
   });

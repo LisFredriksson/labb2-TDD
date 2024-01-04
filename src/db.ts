@@ -9,7 +9,6 @@ const connectionString: string =  process.env.MONGODB_URI as string;
 
 async function connectToDatabase() {
   const  client = new MongoClient(connectionString);
-
   try {
     await client.connect();
     await client.db("admin").command({ ping: 1 });

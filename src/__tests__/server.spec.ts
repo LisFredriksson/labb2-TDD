@@ -2,24 +2,19 @@ import request from 'supertest';
 import { app } from '../app';
 
 describe('GET /contact', () => {
-  it('should return json and status code 200', (done) => {
-    request(app)
+  it('should return json and status code 200', async () => {
+    const response = await request(app)
       .get('/contact')
       .expect('Content-Type', /json/)
-      .expect(200)
-      .end((err, res) => {
-        if (err) {
-          done(err); // Call done with the error if there's an issue
-          return;
-        }
-        done();
-      });
+      .expect(200);
+      expect(response.body).toBeDefined();
+      expect(typeof response.body).toBe('object');
   });
 });
 
 describe('POST /contact', () => {
-  it('should return json and correct data structure', (done) => {
-    request(app)
+  it('should return json and correct data structure', async () => {
+    const response = await request(app)
       .post('/contact')
       .expect('Content-Type', /json/)
       .expect(200)
@@ -32,13 +27,7 @@ describe('POST /contact', () => {
         "zipCode": "111 22",
         "city": "Stockholm",
         "country": "Sweden"
-      })
-      .end((err, res) => {
-        if (err) {
-          done(err);
-          return;
-        }
-        done();
       });
+
   });
 });
