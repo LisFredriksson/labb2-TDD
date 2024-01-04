@@ -1,3 +1,4 @@
 export const validateZIP = (zip: string): boolean => {
-    return /^\d{5}$/.test(zip);
+    const cleandZIP = zip.replace(/\s/g, '');
+    return /^\d{5}$/.test(cleandZIP);
   };

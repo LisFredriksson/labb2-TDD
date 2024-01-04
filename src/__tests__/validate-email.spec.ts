@@ -13,4 +13,8 @@ describe('validate-email.ts tests', () => {
     const actualResult = validateEmail('jonatan.com');
     expect(actualResult).toBe(false);
   });
+  it('should validate empty string as an invalid email', () => {
+    const actualResult = validateEmail('');
+    expect(actualResult).toBe(false);
+  });
 });

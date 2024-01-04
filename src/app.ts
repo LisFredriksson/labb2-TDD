@@ -1,9 +1,11 @@
-import express from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
+import express, { Request, Response } from 'express';
 import connectToDatabase from './db';
-import { response } from 'express';
-import { request } from 'express';
+import { validatePersonalNumber } from './validations/validatePersonalNumber';
+import { validateEmail } from './validations/validateEmail';
+import { validateZIP } from './validations/validateZIP';
+import { validateText } from './validations/validateText';
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
@@ -15,18 +17,20 @@ app.get('/contact', (req, res) => {
   res.status(200).json({ message: 'Contact information' });
 });
 
-app.post('/contact', (req, res) => {
-  res.json({
-    "firstname": "Anna",
-    "lastname": "Andersson",
-    "email": "anna.andersson@gmail.com",
-    "personalnumber": "550713-1405",
-    "address": "Utvecklargatan 12",
-    "zipCode": "111 22",
-    "city": "Stockholm",
-    "country": "Sweden"
-  })
-  res.status(200).json({ message: 'Added new contact' });
+app.post('/contact', (req: Request, res: Response) => {
+  const contactData = req.body;
+
+  const validationErrors = validateContactData(contactData);
+
+  if (validationErrors.length > 0) {
+    console.log('Validation Errors:', validationErrors);
+    res.status(400).json({ errors: validationErrors });
+  } else {
+    console.log('Valid Data Received:', contactData);
+    res.status(201).json({ message: 'Added new contact' });
+
+    // TODO: Save the contactData to the database here
+  }
 });
 
 const startServer = async () => {
@@ -42,4 +46,41 @@ const startServer = async () => {
   }
 };
 
-startServer();
+// Validation function for contactData
+function validateContactData(contactData: any): string[] {
+  const errors: string[] = [];
+
+  if (!validateText(contactData.firstname)) {
+    errors.push('firstname is missing or invalid');
+  }
+
+  if (!validateText(contactData.lastname)) {
+    errors.push('lastname is missing or invalid');
+  }
+
+  if (!validateEmail(contactData.email)) {
+    errors.push('email is missing or invalid');
+  }
+
+  if (!validatePersonalNumber(contactData.personalnumber)) {
+    errors.push('personalnumber is missing or invalid');
+  }
+
+  if (!validateText(contactData.address)) {
+    errors.push('address is missing or invalid');
+  }
+
+  if (!validateZIP(contactData.zipCode)) {
+    errors.push('zipCode is missing or invalid');
+  }
+
+  if (!validateText(contactData.city)) {
+    errors.push('city is missing or invalid');
+  }
+
+  if (!validateText(contactData.country)) {
+    errors.push('country is missing or invalid');
+  }
+
+  return errors;
+}
