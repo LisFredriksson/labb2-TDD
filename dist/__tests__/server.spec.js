@@ -29,18 +29,30 @@ describe('POST /contact - Valid Data', () => {
         const response = yield (0, supertest_1.default)(app_1.app)
             .post('/contact')
             .send({
-            "firstname": "Anna",
-            "lastname": "Andersson",
-            "email": "anna.andersson@gmail.com",
+            "firstname": "Lis",
+            "lastname": "Fredriksson",
+            "email": "lisfredriksson@gmail.com",
             "personalnumber": "900201-0529",
-            "address": "Utvecklargatan 12",
-            "zipCode": "111 22",
-            "city": "Stockholm",
+            "address": "ymergatan 12B",
+            "zipCode": "753 25",
+            "city": "Uppsala",
             "country": "Sweden"
         })
             .expect('Content-Type', /json/)
             .expect(201);
-        expect(response.body).toEqual({ message: 'Added new contact' });
+        expect(response.body).toEqual({
+            message: 'Added new contact',
+            contact: expect.objectContaining({
+                "firstname": "Lis",
+                "lastname": "Fredriksson",
+                "email": "lisfredriksson@gmail.com",
+                "personalnumber": "900201-0529",
+                "address": "ymergatan 12B",
+                "zipCode": "753 25",
+                "city": "Uppsala",
+                "country": "Sweden"
+            }),
+        });
     }));
 });
 describe('POST /contact - Invalid Data', () => {

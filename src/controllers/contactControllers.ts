@@ -1,10 +1,11 @@
 // controllers/contactController.ts
 import { Request, Response } from 'express';
-import ContactModel from '../models/contactModel'; // Import your data model
+import ContactModel from '../models/contactModel';
 import { validateText } from '../validations/validateText';
 import { validateEmail } from '../validations/validateEmail';
 import { validatePersonalNumber } from '../validations/validatePersonalNumber';
 import { validateZIP } from '../validations/validateZIP';
+jest.mock('../models/contactModel');
 
 export const getContactInformation = (req: Request, res: Response): void => {
   res.setHeader('Content-Type', 'application/json');
@@ -13,8 +14,6 @@ export const getContactInformation = (req: Request, res: Response): void => {
 
 export const createContact = async (req: Request, res: Response): Promise<void> => {
   const contactData = req.body;
-
-  // Validate the contact data
   const validationErrors = validateContactData(contactData);
 
   if (validationErrors.length > 0) {
@@ -22,9 +21,7 @@ export const createContact = async (req: Request, res: Response): Promise<void> 
     res.status(400).json({ errors: validationErrors });
   } else {
     try {
-      // Save the contactData to the database
       const newContact = await ContactModel.create(contactData);
-
       console.log('Valid Data Received:', newContact);
       res.status(201).json({ message: 'Added new contact', contact: newContact });
     } catch (error) {
