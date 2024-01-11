@@ -45,6 +45,7 @@ describe('GET /contact/:id', () => {
 
 describe('POST /contact - Valid Data', () => {
   beforeEach(() => {
+    createContactTest.mockReset();
     createContactTest.mockResolvedValue({
       firstname: 'Anna',
       lastname: 'Andersson',
@@ -64,7 +65,10 @@ describe('POST /contact - Valid Data', () => {
   })
 
   it('should call createContact 1 time', async () => {
-    expect(true).toBe(false)
+    const response = await request(app)
+      .post('/contact')
+      .send(validContactData)
+    expect(createContactTest.mock.calls.length).toBe(1)
   })
 });
 
