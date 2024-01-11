@@ -2,10 +2,14 @@
 import express from 'express';
 import { getContactInformation, createContact } from '../controllers/contactControllers';
 
-const router = express.Router();
+const contactRoutes = (createContactTest: Function) => {
+  const router = express.Router();
 
-// Define routes
-router.get('/', getContactInformation);
-router.post('/', createContact);
 
-export default router;
+  router.get('/', getContactInformation);
+  router.post('/', createContact(createContactTest));
+
+  return router;
+};
+
+export default contactRoutes;

@@ -1,12 +1,11 @@
 import { default as request } from 'supertest';
 import { makeApp } from '../app';
-import nock from 'nock'
-import ContactModel from '../models/contactModel';
-const app = makeApp()
-jest.mock('../models/contactModel');
+
+const createContactTest = jest.fn();
+
+const app = makeApp({ createContactTest })
 
 const validContactData = {
-          id: '638cfd06f84b41a7be61ebad',
           firstname: 'Anna',
           lastname: 'Andersson',
           email: 'anna.andersson@gmail.com',
@@ -45,6 +44,18 @@ describe('GET /contact/:id', () => {
 
 
 describe('POST /contact - Valid Data', () => {
+  beforeEach(() => {
+    createContactTest.mockResolvedValue({
+      firstname: 'Anna',
+      lastname: 'Andersson',
+      email: 'anna.andersson@gmail.com',
+      personalnumber: '550713-1405',
+      address: 'Utvecklargatan 12',
+      zipCode: '111 22',
+      city: 'Stockholm',
+      country: 'Sweden',
+    })
+  })
   it('should return status code 201 when posting a new contact', async () => {
     const response = await request(app)
       .post('/contact')
@@ -55,16 +66,15 @@ describe('POST /contact - Valid Data', () => {
   it('should call createContact 1 time', async () => {
     expect(true).toBe(false)
   })
+});
 
+describe('POST /contact - Invalid Data', () => {
   it('should return status code 400 when posting a new contact with invalid data', async () => {
     const response = await request(app)
       .post('/contact')
       .send(invalidContactData)
     expect(response.statusCode).toBe(400)
   })
-});
-
-describe('POST /contact - Invalid Data', () => {
   it('should return JSON with error messages for invalid data', async () => {
     const response = await request(app)
       .post('/contact')
