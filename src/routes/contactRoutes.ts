@@ -6,7 +6,7 @@ const contactRoutes = (createContactTest: Function) => {
   const router = express.Router();
 
 
-  router.get('/', getContactInformation);
+  router.get('/:id', getContactInformation);
   router.post('/', createContact(createContactTest));
 
   return router;

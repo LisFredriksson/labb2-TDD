@@ -1,7 +1,8 @@
+import { response } from 'express';
 import { default as request } from 'supertest';
 import { makeApp } from '../app';
 
-const createContactTest = jest.fn();
+export const createContactTest = jest.fn();
 
 const app = makeApp({ createContactTest })
 
@@ -21,11 +22,11 @@ const invalidContactData = {
       };
 
 describe('GET /contact', () => {
-  it('should return JSON and status code 201', async () => {
+  it('should return JSON and status code 200', async () => {
     const response = await request(app)
-      .get('/contact')
+      .get('/contact/:id')
       .expect('Content-Type', /json/)
-      .expect(201);
+      .expect(200);
 
     expect(response.body).toBeDefined();
     expect(typeof response.body).toBe('object');
@@ -33,11 +34,19 @@ describe('GET /contact', () => {
 });
 
 describe('GET /contact/:id', () => {
-  it('should return status code 400 if invalid mongoDb id is sent', () => {
-    expect(true).toBe(false)
+  it('should return status code 400 if invalid mongoDb id is sent', async () => {
+    const response = await request(app)
+    .get('/contact/:fakeid')
+    expect(response.statusCode).toBe(400)
   })
-  it('should return a product when called with a valid id', () => {
-    expect(true).toBe(false)
+
+})
+
+describe('GET /contact/:id', () => {
+  it('should return a product when called with a valid id', async () => {
+    const response = await request(app)
+    .get('/contact/:6596ba0d54ec47857c359522')
+    expect(response.statusCode).toBe(200)
   })
 
 })

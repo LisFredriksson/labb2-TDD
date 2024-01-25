@@ -2,10 +2,11 @@ import path from 'path';
 import connectToDatabase from './db';
 import dotenv from 'dotenv';
 import { makeApp } from './app';
+import { createContactTest } from './__tests__/app.spec';
 
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
-const app = makeApp()
+const app = makeApp({createContactTest})
 
 const startServer = async () => {
     try {

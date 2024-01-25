@@ -12,25 +12,6 @@ export const getContactInformation = (req: Request, res: Response): void => {
   res.status(200).json({ message: 'Contact information' });
 };
 
-// export const createContact = async (req: Request, res: Response): Promise<void> => {
-//   const contactData = req.body;
-//   const validationErrors = validateContactData(contactData);
-
-//   if (validationErrors.length > 0) {
-//     console.log('Validation Errors:', validationErrors);
-//     res.status(400).json({ errors: validationErrors });
-//   } else {
-//     try {
-//         const newContact = await ContactModel.create(contactData);
-//         console.log('Valid Data Received:', newContact);
-//         res.status(201).json({ message: 'Added new contact', contact: newContact });
-//     } catch (error) {
-//       console.error('Error saving contact to the database:', error);
-//       res.status(500).json({ error: 'Internal Server Error' });
-//     }
-//   }
-// };
-
 export const createContact = (createContactTest: Function) => async (req: Request, res: Response): Promise<void> => {
     const contactData = req.body;
     const validationErrors = validateContactData(contactData);
@@ -40,6 +21,7 @@ export const createContact = (createContactTest: Function) => async (req: Reques
       res.status(400).json({ errors: validationErrors });
     } else {
       try {
+        const newContact = await ContactModel.create(contactData);
         const contact = await createContactTest(contactData);
         console.log('Valid Data Received:', contact);
         res.status(201).json({ message: 'Added new contact', contact });
